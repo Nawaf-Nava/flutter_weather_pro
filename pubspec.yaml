@@ -18,10 +18,10 @@ dependencies:
   equatable: ^2.0.5
 
   # Local Storage & Persistence (تخزين محلي للمدن والإعدادات)
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.5.5
 
   # Networking & APIs
-  http: ^1.2.0
+  http: ^1.6.0
   dio: ^5.4.1
 
   # Location & Geocoding
@@ -63,9 +63,9 @@ dev_dependencies:
   flutter_lints: ^3.0.1
   build_runner: ^2.4.8
   hive_generator: ^2.0.1
+  flutter_launcher_icons: ^0.14.4
 
-flutter:
-  uses-material-design: true
-  assets:
-    - assets/weather_icons/
-    - assets/audio/
+fflutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"

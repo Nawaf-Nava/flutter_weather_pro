@@ -12,11 +12,28 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'متجر نـافـا', // يمكنك تغيير الاسم لاحقاً
+      title: 'متجر نـافـا', 
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF6200EA), // لون عصري فاخر
+          primary: const Color(0xFF6200EA),
+          secondary: const Color(0xFF03DAC6),
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF8F9FA),
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Color(0xFF2D3142),
+          centerTitle: true,
+          titleTextStyle: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w800,
+            color: Color(0xFF2D3142),
+          ),
+        ),
+        useMaterial3: true,
       ),
-      home: const SplashScreen(), // البدء بالشاشة الافتتاحية
+      home: const SplashScreen(), // البدء بالشاشة الافتتاحية المطلوبة
     );
   }
 }

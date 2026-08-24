@@ -12,34 +12,27 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   
-  // Controllers للتحكم في النصوص المدخلة
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
-  // متغيرات لإخفاء وإظهار كلمة المرور
   bool _isPasswordObscured = true;
   bool _isConfirmObscured = true;
 
   Future<void> _registerUser() async {
-    // التحقق من صحة المدخلات
-    if (_formKey.currentState!.validate()) {
-      // إذا كانت المدخلات صحيحة، نقوم بحفظ البيانات في SharedPreferences
+    if (_formKey.currentState!.validate()) { // التحقق من صحة المدخلات إلزامي
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
+      await prefs.setBool('isLoggedIn', true); // حفظ الحالة إلزامي
       await prefs.setString('username', _nameController.text);
 
       if (!mounted) return;
       
-      // الانتقال إلى الصفحة الرئيسية بعد التسجيل بنجاح
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
     }
   }
 
+  // ... (نفس دالة الـ dispose السابقة)
   @override
   void dispose() {
     _nameController.dispose();
@@ -49,133 +42,124 @@ class _SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
+  InputDecoration _buildInputDecoration(String label, IconData icon, {Widget? suffixIcon}) {
+    return InputDecoration(
+      labelText: label,
+      prefixIcon: Icon(icon, color: Colors.grey.shade600),
+      suffixIcon: suffixIcon,
+      filled: true,
+      fillColor: Colors.white,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: const BorderSide(color: Color(0xFF6200EA), width: 2),
+      ),
+      contentPadding: const EdgeInsets.symmetric(vertical: 18),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('إنشاء حساب جديد'),
-        centerTitle: true,
-      ),
+      backgroundColor: const Color(0xFFF8F9FA),
+      appBar: AppBar(title: const Text('إنشاء حساب')),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.all(24.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const Text(
+                'مرحباً بك!',
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xFF2D3142)),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'قم بإنشاء حسابك للبدء بالتسوق',
+                style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+              ),
+              const SizedBox(height: 40),
+
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 5))]
+                ),
+                child: TextFormField(
+                  controller: _nameController,
+                  decoration: _buildInputDecoration('اسم المستخدم', Icons.person_outline),
+                  validator: (value) => value!.isEmpty ? 'مطلوب' : null,
+                ),
+              ),
               const SizedBox(height: 20),
-              // حقل اسم المستخدم
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'اسم المستخدم',
-                  prefixIcon: Icon(Icons.person),
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'الرجاء إدخال اسم المستخدم';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 15),
 
-              // حقل البريد الإلكتروني
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'البريد الإلكتروني',
-                  prefixIcon: Icon(Icons.email),
-                  border: OutlineInputBorder(),
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 5))]
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'الرجاء إدخال البريد الإلكتروني';
-                  } else if (!value.contains('@')) {
-                    return 'الرجاء إدخال بريد إلكتروني صحيح';
-                  }
-                  return null;
-                },
+                child: TextFormField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: _buildInputDecoration('البريد الإلكتروني', Icons.email_outlined),
+                  validator: (value) => (value == null || !value.contains('@')) ? 'بريد غير صالح' : null,
+                ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
 
-              // حقل كلمة المرور
-              TextFormField(
-                controller: _passwordController,
-                obscureText: _isPasswordObscured,
-                decoration: InputDecoration(
-                  labelText: 'كلمة المرور',
-                  prefixIcon: const Icon(Icons.lock),
-                  border: const OutlineInputBorder(),
-                  // زر إظهار وإخفاء كلمة المرور
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isPasswordObscured ? Icons.visibility_off : Icons.visibility,
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 5))]
+                ),
+                child: TextFormField(
+                  controller: _passwordController,
+                  obscureText: _isPasswordObscured, // إخفاء إلزامي
+                  decoration: _buildInputDecoration(
+                    'كلمة المرور', 
+                    Icons.lock_outline,
+                    suffixIcon: IconButton(
+                      icon: Icon(_isPasswordObscured ? Icons.visibility_off : Icons.visibility, color: Colors.grey),
+                      onPressed: () => setState(() => _isPasswordObscured = !_isPasswordObscured),
                     ),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordObscured = !_isPasswordObscured;
-                      });
-                    },
                   ),
+                  validator: (value) => (value == null || value.length < 6) ? '6 أحرف على الأقل' : null,
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'الرجاء إدخال كلمة المرور';
-                  } else if (value.length < 6) {
-                    return 'كلمة المرور يجب أن لا تقل عن 6 أحرف';
-                  }
-                  return null;
-                },
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
 
-              // حقل تأكيد كلمة المرور
-              TextFormField(
-                controller: _confirmPasswordController,
-                obscureText: _isConfirmObscured,
-                decoration: InputDecoration(
-                  labelText: 'تأكيد كلمة المرور',
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  border: const OutlineInputBorder(),
-                  // زر إظهار وإخفاء تأكيد كلمة المرور
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isConfirmObscured ? Icons.visibility_off : Icons.visibility,
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 5))]
+                ),
+                child: TextFormField(
+                  controller: _confirmPasswordController,
+                  obscureText: _isConfirmObscured, // إخفاء إلزامي
+                  decoration: _buildInputDecoration(
+                    'تأكيد كلمة المرور', 
+                    Icons.lock_reset_outlined,
+                    suffixIcon: IconButton(
+                      icon: Icon(_isConfirmObscured ? Icons.visibility_off : Icons.visibility, color: Colors.grey),
+                      onPressed: () => setState(() => _isConfirmObscured = !_isConfirmObscured),
                     ),
-                    onPressed: () {
-                      setState(() {
-                        _isConfirmObscured = !_isConfirmObscured;
-                      });
-                    },
                   ),
+                  validator: (value) => (value != _passwordController.text) ? 'غير متطابقة' : null,
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'الرجاء تأكيد كلمة المرور';
-                  } else if (value != _passwordController.text) {
-                    return 'كلمات المرور غير متطابقة';
-                  }
-                  return null;
-                },
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 40),
 
-              // زر التسجيل
               ElevatedButton(
                 onPressed: _registerUser,
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                  backgroundColor: const Color(0xFF6200EA),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  elevation: 5,
                 ),
-                child: const Text(
-                  'تسجيل',
-                  style: TextStyle(fontSize: 18),
-                ),
+                child: const Text('تسجيل الدخول', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ],
           ),

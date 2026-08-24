@@ -14,8 +14,7 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   String _username = '';
 
-  // قائمة الصفحات الثلاث المطلوبة
-  final List<Widget> _pages = [
+ final List<Widget> _pages = [
     const ProductsPage(),
     const Center(child: Text('المفضلة', style: TextStyle(fontSize: 24))),
     const ProfilePage(),

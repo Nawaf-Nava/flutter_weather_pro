@@ -51,7 +51,7 @@ class _ProductsPageState extends State<ProductsPage> {
         return Card(
           margin: const EdgeInsets.only(bottom: 16),
           elevation: 5,
-          shadowColor: Colors.black.withOpacity(0.1),
+          shadowColor: Colors.black.withValues(alpha: 0.1),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Container(
             decoration: BoxDecoration(

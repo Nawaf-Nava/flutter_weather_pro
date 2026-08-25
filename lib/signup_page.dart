@@ -87,7 +87,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
               Container(
                 decoration: BoxDecoration(
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 5))]
+                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 15, offset: const Offset(0, 5))]
                 ),
                 child: TextFormField(
                   controller: _nameController,
@@ -99,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
               Container(
                 decoration: BoxDecoration(
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 5))]
+                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 15, offset: const Offset(0, 5))]
                 ),
                 child: TextFormField(
                   controller: _emailController,
@@ -112,7 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
               Container(
                 decoration: BoxDecoration(
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 5))]
+                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 15, offset: const Offset(0, 5))]
                 ),
                 child: TextFormField(
                   controller: _passwordController,
@@ -132,7 +132,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
               Container(
                 decoration: BoxDecoration(
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 5))]
+                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 15, offset: const Offset(0, 5))]
                 ),
                 child: TextFormField(
                   controller: _confirmPasswordController,
